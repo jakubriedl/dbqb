@@ -1,4 +1,4 @@
-<?php namespace Illuminate\Database;
+<?php namespace JakubRiedl\Dbqb;
 
 abstract class Grammar {
 
@@ -127,7 +127,7 @@ abstract class Grammar {
 	/**
 	 * Get the value of a raw expression.
 	 *
-	 * @param  \Illuminate\Database\Query\Expression  $expression
+	 * @param  \JakubRiedl\Dbqb\Query\Expression  $expression
 	 * @return string
 	 */
 	public function getValue($expression)

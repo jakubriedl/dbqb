@@ -1,11 +1,11 @@
-<?php namespace Illuminate\Database\Connectors;
+<?php namespace JakubRiedl\Dbqb\Connectors;
 
 use PDO;
 use InvalidArgumentException;
-use Illuminate\Database\MySqlConnection;
-use Illuminate\Database\SQLiteConnection;
-use Illuminate\Database\PostgresConnection;
-use Illuminate\Database\SqlServerConnection;
+use JakubRiedl\Dbqb\MySqlConnection;
+use JakubRiedl\Dbqb\SQLiteConnection;
+use JakubRiedl\Dbqb\PostgresConnection;
+use JakubRiedl\Dbqb\SqlServerConnection;
 use Illuminate\Contracts\Container\Container;
 
 class ConnectionFactory {
@@ -33,7 +33,7 @@ class ConnectionFactory {
 	 *
 	 * @param  array   $config
 	 * @param  string  $name
-	 * @return \Illuminate\Database\Connection
+	 * @return \JakubRiedl\Dbqb\Connection
 	 */
 	public function make(array $config, $name = null)
 	{
@@ -51,7 +51,7 @@ class ConnectionFactory {
 	 * Create a single database connection instance.
 	 *
 	 * @param  array  $config
-	 * @return \Illuminate\Database\Connection
+	 * @return \JakubRiedl\Dbqb\Connection
 	 */
 	protected function createSingleConnection(array $config)
 	{
@@ -64,7 +64,7 @@ class ConnectionFactory {
 	 * Create a single database connection instance.
 	 *
 	 * @param  array  $config
-	 * @return \Illuminate\Database\Connection
+	 * @return \JakubRiedl\Dbqb\Connection
 	 */
 	protected function createReadWriteConnection(array $config)
 	{
@@ -157,7 +157,7 @@ class ConnectionFactory {
 	 * Create a connector instance based on the configuration.
 	 *
 	 * @param  array  $config
-	 * @return \Illuminate\Database\Connectors\ConnectorInterface
+	 * @return \JakubRiedl\Dbqb\Connectors\ConnectorInterface
 	 *
 	 * @throws \InvalidArgumentException
 	 */
@@ -199,7 +199,7 @@ class ConnectionFactory {
 	 * @param  string   $database
 	 * @param  string   $prefix
 	 * @param  array    $config
-	 * @return \Illuminate\Database\Connection
+	 * @return \JakubRiedl\Dbqb\Connection
 	 *
 	 * @throws \InvalidArgumentException
 	 */

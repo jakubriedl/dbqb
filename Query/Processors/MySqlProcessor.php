@@ -1,4 +1,4 @@
-<?php namespace Illuminate\Database\Query\Processors;
+<?php namespace JakubRiedl\Dbqb\Query\Processors;
 
 class MySqlProcessor extends Processor {
 

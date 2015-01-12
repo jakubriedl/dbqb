@@ -1,4 +1,4 @@
-<?php namespace Illuminate\Database;
+<?php namespace JakubRiedl\Dbqb;
 
 use PDOException;
 
@@ -24,7 +24,6 @@ class QueryException extends PDOException {
 	 * @param  string  $sql
 	 * @param  array  $bindings
 	 * @param  \Exception $previous
-	 * @return void
 	 */
 	public function __construct($sql, array $bindings, $previous)
 	{

@@ -1,16 +1,14 @@
-<?php namespace Illuminate\Database;
+<?php namespace JakubRiedl\Dbqb;
 
-use Doctrine\DBAL\Driver\PDOPgSql\Driver as DoctrineDriver;
-use Illuminate\Database\Query\Processors\PostgresProcessor;
-use Illuminate\Database\Query\Grammars\PostgresGrammar as QueryGrammar;
-use Illuminate\Database\Schema\Grammars\PostgresGrammar as SchemaGrammar;
+use JakubRiedl\Dbqb\Query\Processors\PostgresProcessor;
+use JakubRiedl\Dbqb\Query\Grammars\PostgresGrammar as QueryGrammar;
 
 class PostgresConnection extends Connection {
 
 	/**
 	 * Get the default query grammar instance.
 	 *
-	 * @return \Illuminate\Database\Query\Grammars\PostgresGrammar
+	 * @return \JakubRiedl\Dbqb\Query\Grammars\PostgresGrammar
 	 */
 	protected function getDefaultQueryGrammar()
 	{
@@ -18,33 +16,12 @@ class PostgresConnection extends Connection {
 	}
 
 	/**
-	 * Get the default schema grammar instance.
-	 *
-	 * @return \Illuminate\Database\Schema\Grammars\PostgresGrammar
-	 */
-	protected function getDefaultSchemaGrammar()
-	{
-		return $this->withTablePrefix(new SchemaGrammar);
-	}
-
-	/**
 	 * Get the default post processor instance.
 	 *
-	 * @return \Illuminate\Database\Query\Processors\PostgresProcessor
+	 * @return \JakubRiedl\Dbqb\Query\Processors\PostgresProcessor
 	 */
 	protected function getDefaultPostProcessor()
 	{
 		return new PostgresProcessor;
 	}
-
-	/**
-	 * Get the Doctrine DBAL driver.
-	 *
-	 * @return \Doctrine\DBAL\Driver\PDOPgSql\Driver
-	 */
-	protected function getDoctrineDriver()
-	{
-		return new DoctrineDriver;
-	}
-
 }

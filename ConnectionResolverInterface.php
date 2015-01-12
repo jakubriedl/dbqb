@@ -1,4 +1,4 @@
-<?php namespace Illuminate\Database;
+<?php namespace JakubRiedl\Dbqb;
 
 interface ConnectionResolverInterface {
 
@@ -6,7 +6,7 @@ interface ConnectionResolverInterface {
 	 * Get a database connection instance.
 	 *
 	 * @param  string  $name
-	 * @return \Illuminate\Database\Connection
+	 * @return \JakubRiedl\Dbqb\Connection
 	 */
 	public function connection($name = null);
 

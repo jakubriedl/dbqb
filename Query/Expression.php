@@ -1,4 +1,4 @@
-<?php namespace Illuminate\Database\Query;
+<?php namespace JakubRiedl\Dbqb\Query;
 
 class Expression {
 

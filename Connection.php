@@ -1,4 +1,4 @@
-<?php namespace Illuminate\Database;
+<?php namespace JakubRiedl\Dbqb;
 
 use PDO;
 use Closure;
@@ -7,8 +7,7 @@ use Exception;
 use LogicException;
 use RuntimeException;
 use Illuminate\Contracts\Events\Dispatcher;
-use Illuminate\Database\Query\Processors\Processor;
-use Doctrine\DBAL\Connection as DoctrineConnection;
+use JakubRiedl\Dbqb\Query\Processors\Processor;
 
 class Connection implements ConnectionInterface {
 
@@ -36,21 +35,15 @@ class Connection implements ConnectionInterface {
 	/**
 	 * The query grammar implementation.
 	 *
-	 * @var \Illuminate\Database\Query\Grammars\Grammar
+	 * @var \JakubRiedl\Dbqb\Query\Grammars\Grammar
 	 */
 	protected $queryGrammar;
 
-	/**
-	 * The schema grammar implementation.
-	 *
-	 * @var \Illuminate\Database\Schema\Grammars\Grammar
-	 */
-	protected $schemaGrammar;
 
 	/**
 	 * The query post processor implementation.
 	 *
-	 * @var \Illuminate\Database\Query\Processors\Processor
+	 * @var \JakubRiedl\Dbqb\Query\Processors\Processor
 	 */
 	protected $postProcessor;
 
@@ -124,7 +117,6 @@ class Connection implements ConnectionInterface {
 	 * @param  string   $database
 	 * @param  string   $tablePrefix
 	 * @param  array    $config
-	 * @return void
 	 */
 	public function __construct(PDO $pdo, $database = '', $tablePrefix = '', array $config = array())
 	{
@@ -160,29 +152,12 @@ class Connection implements ConnectionInterface {
 	/**
 	 * Get the default query grammar instance.
 	 *
-	 * @return \Illuminate\Database\Query\Grammars\Grammar
+	 * @return \JakubRiedl\Dbqb\Query\Grammars\Grammar
 	 */
 	protected function getDefaultQueryGrammar()
 	{
 		return new Query\Grammars\Grammar;
 	}
-
-	/**
-	 * Set the schema grammar to the default implementation.
-	 *
-	 * @return void
-	 */
-	public function useDefaultSchemaGrammar()
-	{
-		$this->schemaGrammar = $this->getDefaultSchemaGrammar();
-	}
-
-	/**
-	 * Get the default schema grammar instance.
-	 *
-	 * @return \Illuminate\Database\Schema\Grammars\Grammar
-	 */
-	protected function getDefaultSchemaGrammar() {}
 
 	/**
 	 * Set the query post processor to the default implementation.
@@ -197,7 +172,7 @@ class Connection implements ConnectionInterface {
 	/**
 	 * Get the default post processor instance.
 	 *
-	 * @return \Illuminate\Database\Query\Processors\Processor
+	 * @return \JakubRiedl\Dbqb\Query\Processors\Processor
 	 */
 	protected function getDefaultPostProcessor()
 	{
@@ -205,22 +180,10 @@ class Connection implements ConnectionInterface {
 	}
 
 	/**
-	 * Get a schema builder instance for the connection.
-	 *
-	 * @return \Illuminate\Database\Schema\Builder
-	 */
-	public function getSchemaBuilder()
-	{
-		if (is_null($this->schemaGrammar)) { $this->useDefaultSchemaGrammar(); }
-
-		return new Schema\Builder($this);
-	}
-
-	/**
 	 * Begin a fluent query against a database table.
 	 *
 	 * @param  string  $table
-	 * @return \Illuminate\Database\Query\Builder
+	 * @return \JakubRiedl\Dbqb\Query\Builder
 	 */
 	public function table($table)
 	{
@@ -235,7 +198,7 @@ class Connection implements ConnectionInterface {
 	 * Get a new raw query expression.
 	 *
 	 * @param  mixed  $value
-	 * @return \Illuminate\Database\Query\Expression
+	 * @return \JakubRiedl\Dbqb\Query\Expression
 	 */
 	public function raw($value)
 	{
@@ -554,7 +517,7 @@ class Connection implements ConnectionInterface {
 	 * @param  \Closure  $callback
 	 * @return mixed
 	 *
-	 * @throws \Illuminate\Database\QueryException
+	 * @throws \JakubRiedl\Dbqb\QueryException
 	 */
 	protected function run($query, $bindings, Closure $callback)
 	{
@@ -594,7 +557,7 @@ class Connection implements ConnectionInterface {
 	 * @param  \Closure  $callback
 	 * @return mixed
 	 *
-	 * @throws \Illuminate\Database\QueryException
+	 * @throws \JakubRiedl\Dbqb\QueryException
 	 */
 	protected function runQueryCallback($query, $bindings, Closure $callback)
 	{
@@ -622,13 +585,13 @@ class Connection implements ConnectionInterface {
 	/**
 	 * Handle a query exception that occurred during query execution.
 	 *
-	 * @param  \Illuminate\Database\QueryException  $e
+	 * @param  \JakubRiedl\Dbqb\QueryException  $e
 	 * @param  string    $query
 	 * @param  array     $bindings
 	 * @param  \Closure  $callback
 	 * @return mixed
 	 *
-	 * @throws \Illuminate\Database\QueryException
+	 * @throws \JakubRiedl\Dbqb\QueryException
 	 */
 	protected function tryAgainIfCausedByLostConnection(QueryException $e, $query, $bindings, Closure $callback)
 	{
@@ -645,7 +608,7 @@ class Connection implements ConnectionInterface {
 	/**
 	 * Determine if the given exception was caused by a lost connection.
 	 *
-	 * @param  \Illuminate\Database\QueryException
+	 * @param  \JakubRiedl\Dbqb\QueryException
 	 * @return bool
 	 */
 	protected function causedByLostConnection(QueryException $e)
@@ -753,44 +716,6 @@ class Connection implements ConnectionInterface {
 	}
 
 	/**
-	 * Get a Doctrine Schema Column instance.
-	 *
-	 * @param  string  $table
-	 * @param  string  $column
-	 * @return \Doctrine\DBAL\Schema\Column
-	 */
-	public function getDoctrineColumn($table, $column)
-	{
-		$schema = $this->getDoctrineSchemaManager();
-
-		return $schema->listTableDetails($table)->getColumn($column);
-	}
-
-	/**
-	 * Get the Doctrine DBAL schema manager for the connection.
-	 *
-	 * @return \Doctrine\DBAL\Schema\AbstractSchemaManager
-	 */
-	public function getDoctrineSchemaManager()
-	{
-		return $this->getDoctrineDriver()->getSchemaManager($this->getDoctrineConnection());
-	}
-
-	/**
-	 * Get the Doctrine DBAL database connection instance.
-	 *
-	 * @return \Doctrine\DBAL\Connection
-	 */
-	public function getDoctrineConnection()
-	{
-		$driver = $this->getDoctrineDriver();
-
-		$data = array('pdo' => $this->pdo, 'dbname' => $this->getConfig('database'));
-
-		return new DoctrineConnection($data, $driver);
-	}
-
-	/**
 	 * Get the current PDO connection.
 	 *
 	 * @return \PDO
@@ -888,7 +813,7 @@ class Connection implements ConnectionInterface {
 	/**
 	 * Get the query grammar used by the connection.
 	 *
-	 * @return \Illuminate\Database\Query\Grammars\Grammar
+	 * @return \JakubRiedl\Dbqb\Query\Grammars\Grammar
 	 */
 	public function getQueryGrammar()
 	{
@@ -898,7 +823,7 @@ class Connection implements ConnectionInterface {
 	/**
 	 * Set the query grammar used by the connection.
 	 *
-	 * @param  \Illuminate\Database\Query\Grammars\Grammar
+	 * @param  \JakubRiedl\Dbqb\Query\Grammars\Grammar
 	 * @return void
 	 */
 	public function setQueryGrammar(Query\Grammars\Grammar $grammar)
@@ -907,30 +832,9 @@ class Connection implements ConnectionInterface {
 	}
 
 	/**
-	 * Get the schema grammar used by the connection.
-	 *
-	 * @return \Illuminate\Database\Query\Grammars\Grammar
-	 */
-	public function getSchemaGrammar()
-	{
-		return $this->schemaGrammar;
-	}
-
-	/**
-	 * Set the schema grammar used by the connection.
-	 *
-	 * @param  \Illuminate\Database\Schema\Grammars\Grammar
-	 * @return void
-	 */
-	public function setSchemaGrammar(Schema\Grammars\Grammar $grammar)
-	{
-		$this->schemaGrammar = $grammar;
-	}
-
-	/**
 	 * Get the query post processor used by the connection.
 	 *
-	 * @return \Illuminate\Database\Query\Processors\Processor
+	 * @return \JakubRiedl\Dbqb\Query\Processors\Processor
 	 */
 	public function getPostProcessor()
 	{
@@ -940,7 +844,7 @@ class Connection implements ConnectionInterface {
 	/**
 	 * Set the query post processor used by the connection.
 	 *
-	 * @param  \Illuminate\Database\Query\Processors\Processor
+	 * @param  \JakubRiedl\Dbqb\Query\Processors\Processor
 	 * @return void
 	 */
 	public function setPostProcessor(Processor $processor)
@@ -1097,8 +1001,8 @@ class Connection implements ConnectionInterface {
 	/**
 	 * Set the table prefix and return the grammar.
 	 *
-	 * @param  \Illuminate\Database\Grammar  $grammar
-	 * @return \Illuminate\Database\Grammar
+	 * @param  \JakubRiedl\Dbqb\Grammar  $grammar
+	 * @return \JakubRiedl\Dbqb\Grammar
 	 */
 	public function withTablePrefix(Grammar $grammar)
 	{
