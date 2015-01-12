@@ -1,8 +1,8 @@
 {
-    "name": "illuminate/database",
-    "description": "The Illuminate Database package.",
+    "name": "jakubriedl/dbqb",
+    "description": "Database Query Builder base on Illuminate Database package.",
     "license": "MIT",
-    "keywords": ["laravel", "database", "sql", "orm"],
+    "keywords": ["database", "sql"],
     "authors": [
         {
             "name": "Taylor Otwell",
@@ -23,11 +23,6 @@
     "autoload": {
         "psr-4": {
             "Illuminate\\Database\\": ""
-        }
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "5.0-dev"
         }
     },
     "minimum-stability": "dev"
