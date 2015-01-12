@@ -1,5 +1,6 @@
 <?php namespace JakubRiedl\Dbqb\Connectors;
 
+use JakubRiedl\Dbqb\Support\Arr;
 use PDO;
 use InvalidArgumentException;
 use JakubRiedl\Dbqb\MySqlConnection;
@@ -138,7 +139,7 @@ class ConnectionFactory {
 	 */
 	protected function mergeReadWriteConfig(array $config, array $merge)
 	{
-		return array_except(array_merge($config, $merge), array('read', 'write'));
+		return Arr::except(array_merge($config, $merge), array('read', 'write'));
 	}
 
 	/**
@@ -150,7 +151,7 @@ class ConnectionFactory {
 	 */
 	protected function parseConfig(array $config, $name)
 	{
-		return array_add(array_add($config, 'prefix', ''), 'name', $name);
+		return Arr::add(Arr::add($config, 'prefix', ''), 'name', $name);
 	}
 
 	/**

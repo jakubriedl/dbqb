@@ -4,6 +4,7 @@ use ArrayAccess;
 use JsonSerializable;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Arrayable;
+use Closure;
 
 class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable {
 
@@ -41,7 +42,7 @@ class Fluent implements ArrayAccess, Arrayable, Jsonable, JsonSerializable {
             return $this->attributes[$key];
         }
 
-        return value($default);
+        return $default instanceof Closure ? $default() : $default;
     }
 
     /**

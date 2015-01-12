@@ -1,5 +1,6 @@
 <?php namespace JakubRiedl\Dbqb;
 
+use JakubRiedl\Dbqb\Support\Arr;
 use PDO;
 use Closure;
 use DateTime;
@@ -797,7 +798,7 @@ class Connection implements ConnectionInterface {
 	 */
 	public function getConfig($option)
 	{
-		return array_get($this->config, $option);
+		return Arr::get($this->config, $option);
 	}
 
 	/**

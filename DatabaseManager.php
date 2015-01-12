@@ -2,6 +2,7 @@
 
 use JakubRiedl\Dbqb\Connectors\ConnectionFactory;
 use InvalidArgumentException;
+use JakubRiedl\Dbqb\Support\Arr;
 
 class DatabaseManager implements ConnectionResolverInterface
 {
@@ -235,7 +236,7 @@ class DatabaseManager implements ConnectionResolverInterface
         // If the configuration doesn't exist, we'll throw an exception and bail.
         $connections = $this->app['config']['database.connections'];
 
-        if (is_null($config = array_get($connections, $name))) {
+        if (is_null($config = Arr::get($connections, $name))) {
             throw new InvalidArgumentException("Database [$name] not configured.");
         }
 

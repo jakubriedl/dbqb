@@ -6,6 +6,7 @@ use JakubRiedl\Dbqb\ConnectionInterface;
 use JakubRiedl\Dbqb\Query\Grammars\Grammar;
 use JakubRiedl\Dbqb\Query\Processors\Processor;
 use InvalidArgumentException;
+use JakubRiedl\Dbqb\Support\Arr;
 
 class Builder
 {
@@ -1868,7 +1869,7 @@ class Builder
      */
     public function getBindings()
     {
-        return array_flatten($this->bindings);
+        return Arr::flatten($this->bindings);
     }
 
     /**
