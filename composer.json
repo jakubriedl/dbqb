@@ -18,6 +18,5 @@
         "psr-4": {
             "JakubRiedl\\Dbqb\\": ""
         }
-    },
-    "minimum-stability": "dev"
+    }
 }
